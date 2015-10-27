@@ -85,7 +85,7 @@ public class GetPropertiesCommand extends WorksheetCommand
 	public UpdateContainer doIt( Workspace workspace ) throws CommandException
 	{
 		final OntologyManager ontMgr = workspace.getOntologyManager();
-		final Set<LabeledLink> properties = new HashSet<>();
+		final List<LabeledLink> properties = new ArrayList<>();
 
 		logger.debug( "GetPropertiesCommand:" + propertiesRange + ":" + classURI + "," + domainURI + ", " + rangeURI );
 
@@ -168,7 +168,7 @@ public class GetPropertiesCommand extends WorksheetCommand
 		}
 
 		logger.debug( "Got back " + properties.size() + " results" );
-		final Set<LabeledLink> finalProperties = properties;
+		final List<LabeledLink> finalProperties = properties;
 
 		UpdateContainer upd = new UpdateContainer( new AbstractUpdate()
 		{
