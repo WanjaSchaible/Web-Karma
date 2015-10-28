@@ -299,9 +299,10 @@ function getAllClassesForProperty(worksheetId, propertyUri) {
     return uniques;
 }
 
-function getClassesInModel(worksheetId) {
-    var info = generateInfoObject(worksheetId, "", "GetClassesCommand");
+function getClassesInModel(worksheetId, columnId, alignmentId) {
+    var info = generateInfoObject(worksheetId, columnId, "GetClassesCommand");
     info["nodesRange"] = "classesInModel";
+    info["alignmentId"] = alignmentId;
     var result = [];
     $.ajax({
         url: "RequestController",
