@@ -11,7 +11,7 @@ public class GetClassesCommandFactory extends CommandFactory
 {
 	public enum Arguments
 	{
-		propertyURI, worksheetId, nodesRange, hNodeId, alignmentId
+		propertyURI, worksheetId, nodesRange, hNodeId, alignmentId //TODO: hNodeId --> nodeURI muss hierhin chr
 	}
 
 	@Override

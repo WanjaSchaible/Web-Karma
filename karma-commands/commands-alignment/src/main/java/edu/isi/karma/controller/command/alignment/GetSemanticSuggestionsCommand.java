@@ -121,7 +121,6 @@ public class GetSemanticSuggestionsCommand extends WorksheetSelectionCommand
 						//TODO: provide TermPicker object as parameter for getAsJSONObject; adjust maxLabels to 10
 						//result = model.getAsJSONObject( classUri, ontMgr, 10 );
 						result = termPickerRecommendations.appendTermPickerRecommendations( ontMgr, 10 );
-						System.out.println( "yep" );
 					}
 				}
 				else

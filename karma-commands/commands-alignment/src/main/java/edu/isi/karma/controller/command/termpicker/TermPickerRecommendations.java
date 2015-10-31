@@ -50,92 +50,58 @@ public class TermPickerRecommendations
 		objType = rangeURI;
 	}
 
-	//TODO: refactor so it will also provide recommendations for RDF types and properties between RDF types
+	public TermPickerRecommendations( String sbjType, String property, String objType )
+	{
+		this.sbjType = sbjType;
+		this.property = property;
+		this.objType = objType;
+	}
+
 	public void getTermPickerRecommendations() throws IOException
 	{
-		StringBuilder urlBuilder = new StringBuilder();
-		String parameterStart = "?";
-		String parameterJoin = "&";
+		String jsonText = getJsonObjectRecommendation();
 
-		urlBuilder.append( "http://kdsrv01.informatik.uni-kiel.de:8081/pickerapi/recommend" );
-		urlBuilder.append( parameterStart );
+		if ( !jsonText.equals( "" ) )
+		{
+			JSONObject json = new JSONObject( jsonText );
 
-		List<String> arguments = new ArrayList<String>();
-
-		if ( sbjType != null && !sbjType.equals( "" ) )
-		{
-			arguments.add( "sbjType=" + sbjType );
-		}
-		if ( objType != null && !objType.equals( "" ) )
-		{
-			arguments.add( "objType=" + objType );
-		}
-		if ( property != null && !property.equals( "" ) )
-		{
-			arguments.add( "prop=" + property );
-		}
-		if ( recMethod != null )
-		{
-			arguments.add( "recMethod" + recMethod );
-		}
-
-		for ( String argument : arguments )
-		{
-			urlBuilder.append( argument );
-			if ( arguments.indexOf( argument ) != arguments.size() - 1 )
+			JSONArray arrOfProps = json.getJSONArray( "listOfPsRecommendations" );
+			if ( arrOfProps != null )
 			{
-				urlBuilder.append( parameterJoin );
+				int len = arrOfProps.length();
+				for ( int i = 0; i < len; i++ )
+				{
+					psRecommendations.add( arrOfProps.get( i ).toString() );
+				}
 			}
-		}
 
-		InputStream is = new URL( urlBuilder.toString() ).openStream();
-		try
-		{
-			BufferedReader rd = new BufferedReader( new InputStreamReader( is, Charset.forName( "UTF-8" ) ) );
-			String jsonText = readAll( rd );
-			if ( !jsonText.equals( "" ) )
+			JSONArray arrOfSbjTypes = json.getJSONArray( "listOfStsRecommendations" );
+			if ( arrOfSbjTypes != null )
 			{
-				JSONObject json = new JSONObject( jsonText );
-
-				JSONArray arrOfProps = json.getJSONArray( "listOfPsRecommendations" );
-				if ( arrOfProps != null )
+				int len = arrOfSbjTypes.length();
+				for ( int i = 0; i < len; i++ )
 				{
-					int len = arrOfProps.length();
-					for ( int i = 0; i < len; i++ )
-					{
-						psRecommendations.add( arrOfProps.get( i ).toString() );
-					}
+					stsRecommendations.add( arrOfSbjTypes.get( i ).toString() );
 				}
+			}
 
-				JSONArray arrOfSbjTypes = json.getJSONArray( "listOfStsRecommendations" );
-				if ( arrOfSbjTypes != null )
+			JSONArray arrOfObjTypes = json.getJSONArray( "listOfOtsRecommendations" );
+			if ( arrOfObjTypes != null )
+			{
+				int len = arrOfObjTypes.length();
+				for ( int i = 0; i < len; i++ )
 				{
-					int len = arrOfSbjTypes.length();
-					for ( int i = 0; i < len; i++ )
-					{
-						stsRecommendations.add( arrOfSbjTypes.get( i ).toString() );
-					}
-				}
-
-				JSONArray arrOfObjTypes = json.getJSONArray( "listOfOtsRecommendations" );
-				if ( arrOfObjTypes != null )
-				{
-					int len = arrOfObjTypes.length();
-					for ( int i = 0; i < len; i++ )
-					{
-						otsRecommendations.add( arrOfObjTypes.get( i ).toString() );
-					}
+					otsRecommendations.add( arrOfObjTypes.get( i ).toString() );
 				}
 			}
 		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		finally
-		{
-			is.close();
-		}
+	}
+
+	private String encodeUri( String vocabTerms )
+	{
+		String encodedUri = vocabTerms.replace( " ", "%20" );
+		encodedUri = encodedUri.replace( "#", "%23" );
+		return encodedUri;
 	}
 
 	public JSONObject appendTermPickerRecommendations( OntologyManager ontMgr, int maxLabels )
@@ -243,5 +209,59 @@ public class TermPickerRecommendations
 	{
 		LabeledLink labeledLink = null;
 		return labeledLink;
+	}
+
+	public String getJsonObjectRecommendation()
+	{
+		StringBuilder urlBuilder = new StringBuilder();
+		String parameterStart = "?";
+		String parameterJoin = "&";
+
+		urlBuilder.append( "http://kdsrv01.informatik.uni-kiel.de:8081/pickerapi/recommend" );
+		urlBuilder.append( parameterStart );
+
+		List<String> arguments = new ArrayList<String>();
+
+		if ( sbjType != null && !sbjType.equals( "" ) )
+		{
+			arguments.add( "sbjType=" + encodeUri( sbjType ) );
+		}
+		if ( objType != null && !objType.equals( "" ) )
+		{
+			arguments.add( "objType=" + encodeUri( objType ) );
+		}
+		if ( property != null && !property.equals( "" ) )
+		{
+			arguments.add( "prop=" + encodeUri( property ) );
+		}
+		if ( recMethod != null )
+		{
+			arguments.add( "recMethod" + recMethod );
+		}
+
+		for ( String argument : arguments )
+		{
+			urlBuilder.append( argument );
+			if ( arguments.indexOf( argument ) != arguments.size() - 1 )
+			{
+				urlBuilder.append( parameterJoin );
+			}
+		}
+
+		String jsonText = null;
+		try
+		{
+			InputStream is = new URL( urlBuilder.toString() ).openStream();
+			BufferedReader rd = new BufferedReader( new InputStreamReader( is, Charset.forName( "UTF-8" ) ) );
+			jsonText = readAll( rd );
+
+			is.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		return jsonText;
 	}
 }

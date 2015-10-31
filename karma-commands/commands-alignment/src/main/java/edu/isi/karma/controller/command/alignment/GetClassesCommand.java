@@ -3,16 +3,14 @@ package edu.isi.karma.controller.command.alignment;
 import edu.isi.karma.controller.command.CommandException;
 import edu.isi.karma.controller.command.CommandType;
 import edu.isi.karma.controller.command.WorksheetCommand;
+import edu.isi.karma.controller.command.termpicker.TermPickerRecommendationForNodes;
 import edu.isi.karma.controller.update.AbstractUpdate;
 import edu.isi.karma.controller.update.UpdateContainer;
 import edu.isi.karma.modeling.alignment.Alignment;
 import edu.isi.karma.modeling.alignment.AlignmentManager;
 import edu.isi.karma.modeling.ontology.OntologyManager;
 import edu.isi.karma.rep.Workspace;
-import edu.isi.karma.rep.alignment.InternalNode;
-import edu.isi.karma.rep.alignment.Label;
-import edu.isi.karma.rep.alignment.Node;
-import edu.isi.karma.rep.alignment.NodeType;
+import edu.isi.karma.rep.alignment.*;
 import edu.isi.karma.view.VWorkspace;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,6 +89,19 @@ public class GetClassesCommand extends WorksheetCommand
 	@Override
 	public UpdateContainer doIt( Workspace workspace ) throws CommandException
 	{
+		final Alignment alignment = AlignmentManager.Instance().getAlignment( alignmentId );
+		final Set<LabeledLink> incomingLinks;
+		final Set<LabeledLink> outgoingLinks;
+		if ( this.isExecutedInBatch() )
+		{
+			incomingLinks = alignment.getCurrentIncomingLinksToNode( nodeId );
+			outgoingLinks = alignment.getCurrentOutgoingLinksToNode( nodeId );
+		}
+		else
+		{
+			incomingLinks = alignment.getIncomingLinksInTree( nodeId );
+			outgoingLinks = alignment.getOutgoingLinksInTree( nodeId );
+		}
 
 		Map<Node, Boolean> nodeSet = null;
 		if ( range == INTERNAL_NODES_RANGE.classesInModel )
@@ -147,6 +158,28 @@ public class GetClassesCommand extends WorksheetCommand
 					String prefix, PrintWriter pw,
 					VWorkspace vWorkspace )
 			{
+				//TERMPICKER RECOMMENDATIOS === BEGIN
+				HashSet<String> incomingProperties = new HashSet<>();
+				HashSet<String> outgoingProperties = new HashSet<>();
+				for ( LabeledLink incomingLink : incomingLinks )
+				{
+					incomingProperties.add( incomingLink.getUri() );
+				}
+				for ( LabeledLink outgoingLink : outgoingLinks )
+				{
+					outgoingProperties.add( outgoingLink.getUri() );
+				}
+				String incomingPropertyString = getPropertyString( incomingProperties );
+				String outgoingPropertyString = getPropertyString( outgoingProperties );
+
+				Node nodeOfRdfType = alignment.getNodeById( nodeId );
+				String rdfType = nodeOfRdfType.getUri();
+
+				TermPickerRecommendationForNodes nodeRecommendations = new TermPickerRecommendationForNodes( rdfType, incomingPropertyString,
+						outgoingPropertyString );
+
+				//TERMPICKER RECOMMENDATIONS === END
+
 				JSONObject obj = new JSONObject();
 				JSONArray nodesArray = new JSONArray();
 
@@ -192,6 +225,22 @@ public class GetClassesCommand extends WorksheetCommand
 			}
 		} );
 		return upd;
+	}
+
+	private String getPropertyString( HashSet<String> properties )
+	{
+		StringBuilder propertyStringBuilder = new StringBuilder();
+		String space = " ";
+
+		for ( String property : properties )
+		{
+			propertyStringBuilder.append( property );
+			propertyStringBuilder.append( space );
+		}
+
+		String propertyString = propertyStringBuilder.toString().trim();
+
+		return propertyString;
 	}
 
 	private Map<Node, Boolean> getAllClasses( Workspace workspace )
