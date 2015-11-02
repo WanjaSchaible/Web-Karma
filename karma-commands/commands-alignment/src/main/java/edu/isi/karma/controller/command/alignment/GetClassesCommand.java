@@ -116,8 +116,7 @@ public class GetClassesCommand extends WorksheetCommand
 		Map<Node, Boolean> nodeSet = null;
 		if ( range == INTERNAL_NODES_RANGE.classesInModel )
 		{
-			//nodeSet = getClassesInModel( workspace );
-			nodeSet = getAllClasses( workspace );
+			nodeSet = getClassesInModel( workspace );
 		}
 		else if ( range == INTERNAL_NODES_RANGE.allClasses )
 		{
@@ -161,6 +160,7 @@ public class GetClassesCommand extends WorksheetCommand
 			nodeSet = new HashMap<Node, Boolean>();
 		}
 		final Map<Node, Boolean> finalNodeSet = nodeSet;
+		final Map<Node, Boolean> finalNodeSetForTermPicker = getAllClasses( workspace );
 
 		UpdateContainer upd = new UpdateContainer( new AbstractUpdate()
 		{
@@ -201,7 +201,18 @@ public class GetClassesCommand extends WorksheetCommand
 				try
 				{
 					obj.put( JsonKeys.updateType.name(), "InternalNodesList" );
-					for ( Entry<Node, Boolean> entry : finalNodeSet.entrySet() )
+
+					Map<Node, Boolean> nodeSetToProcess;
+					if ( alignment != null )
+					{
+						nodeSetToProcess = finalNodeSetForTermPicker;
+					}
+					else
+					{
+						nodeSetToProcess = finalNodeSet;
+					}
+
+					for ( Entry<Node, Boolean> entry : nodeSetToProcess.entrySet() )
 					{
 						Node node = entry.getKey();
 						/*if ( !(node instanceof InternalNode) )
