@@ -89,24 +89,35 @@ public class GetClassesCommand extends WorksheetCommand
 	@Override
 	public UpdateContainer doIt( Workspace workspace ) throws CommandException
 	{
-		final Alignment alignment = AlignmentManager.Instance().getAlignment( alignmentId );
 		final Set<LabeledLink> incomingLinks;
 		final Set<LabeledLink> outgoingLinks;
-		if ( this.isExecutedInBatch() )
+		final Alignment alignment;
+		if ( alignmentId != null )
 		{
-			incomingLinks = alignment.getCurrentIncomingLinksToNode( nodeId );
-			outgoingLinks = alignment.getCurrentOutgoingLinksToNode( nodeId );
+			alignment = AlignmentManager.Instance().getAlignment( alignmentId );
+			if ( this.isExecutedInBatch() )
+			{
+				incomingLinks = alignment.getCurrentIncomingLinksToNode( nodeId );
+				outgoingLinks = alignment.getCurrentOutgoingLinksToNode( nodeId );
+			}
+			else
+			{
+				incomingLinks = alignment.getIncomingLinksInTree( nodeId );
+				outgoingLinks = alignment.getOutgoingLinksInTree( nodeId );
+			}
 		}
 		else
 		{
-			incomingLinks = alignment.getIncomingLinksInTree( nodeId );
-			outgoingLinks = alignment.getOutgoingLinksInTree( nodeId );
+			incomingLinks = null;
+			outgoingLinks = null;
+			alignment = null;
 		}
 
 		Map<Node, Boolean> nodeSet = null;
 		if ( range == INTERNAL_NODES_RANGE.classesInModel )
 		{
-			nodeSet = getClassesInModel( workspace );
+			//nodeSet = getClassesInModel( workspace );
+			nodeSet = getAllClasses( workspace );
 		}
 		else if ( range == INTERNAL_NODES_RANGE.allClasses )
 		{
@@ -159,25 +170,29 @@ public class GetClassesCommand extends WorksheetCommand
 					VWorkspace vWorkspace )
 			{
 				//TERMPICKER RECOMMENDATIOS === BEGIN
-				HashSet<String> incomingProperties = new HashSet<>();
-				HashSet<String> outgoingProperties = new HashSet<>();
-				for ( LabeledLink incomingLink : incomingLinks )
+				TermPickerRecommendationForNodes nodeRecommendations = null;
+				if ( incomingLinks != null && outgoingLinks != null && alignment != null )
 				{
-					incomingProperties.add( incomingLink.getUri() );
+					HashSet<String> incomingProperties = new HashSet<>();
+					HashSet<String> outgoingProperties = new HashSet<>();
+					for ( LabeledLink incomingLink : incomingLinks )
+					{
+						incomingProperties.add( incomingLink.getUri() );
+					}
+					for ( LabeledLink outgoingLink : outgoingLinks )
+					{
+						outgoingProperties.add( outgoingLink.getUri() );
+					}
+					String incomingPropertyString = getPropertyString( incomingProperties );
+					String outgoingPropertyString = getPropertyString( outgoingProperties );
+
+					Node nodeOfRdfType = alignment.getNodeById( nodeId );
+					String rdfType = nodeOfRdfType.getUri();
+
+					nodeRecommendations = new TermPickerRecommendationForNodes( rdfType,
+							incomingPropertyString,
+							outgoingPropertyString );
 				}
-				for ( LabeledLink outgoingLink : outgoingLinks )
-				{
-					outgoingProperties.add( outgoingLink.getUri() );
-				}
-				String incomingPropertyString = getPropertyString( incomingProperties );
-				String outgoingPropertyString = getPropertyString( outgoingProperties );
-
-				Node nodeOfRdfType = alignment.getNodeById( nodeId );
-				String rdfType = nodeOfRdfType.getUri();
-
-				TermPickerRecommendationForNodes nodeRecommendations = new TermPickerRecommendationForNodes( rdfType, incomingPropertyString,
-						outgoingPropertyString );
-
 				//TERMPICKER RECOMMENDATIONS === END
 
 				JSONObject obj = new JSONObject();
@@ -189,9 +204,16 @@ public class GetClassesCommand extends WorksheetCommand
 					for ( Entry<Node, Boolean> entry : finalNodeSet.entrySet() )
 					{
 						Node node = entry.getKey();
-						if ( !(node instanceof InternalNode) )
+						/*if ( !(node instanceof InternalNode) )
 						{
 							continue;
+						}*/
+						if ( nodeRecommendations != null && !nodeRecommendations.getRdfTypeRecommendations().isEmpty() )
+						{
+							if ( !nodeRecommendations.getRdfTypeRecommendations().contains( node.getUri() ) )
+							{
+								continue;
+							}
 						}
 
 						JSONObject nodeObj = new JSONObject();

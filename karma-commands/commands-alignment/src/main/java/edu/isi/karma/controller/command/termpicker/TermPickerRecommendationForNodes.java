@@ -98,4 +98,33 @@ public class TermPickerRecommendationForNodes
 		return reRankedList;
 	}
 
+	public String getRdfType()
+	{
+		return rdfType;
+	}
+
+	public String getIncomingPropertyString()
+	{
+		return incomingPropertyString;
+	}
+
+	public String getOutgoingPropertyString()
+	{
+		return outgoingPropertyString;
+	}
+
+	public List<String> getRdfTypeRecommendations()
+	{
+		return rdfTypeRecommendations;
+	}
+
+	public HashMap<String, Double> getTermRankScoreMap()
+	{
+		return termRankScoreMap;
+	}
+
+	public HashMap<String, Double> getTermSlpUsageMap()
+	{
+		return termSlpUsageMap;
+	}
 }
