@@ -111,12 +111,12 @@ public class TermPickerRecommendations
 
 		Label domainURI = ontMgr.getUriLabel( classURI );
 
+		String clazzLocalNameWithPrefix = domainURI.getDisplayName();
 		for ( String psRecommendation : psRecommendations )
 		{
 			Label typeURI = ontMgr.getUriLabel( psRecommendation );
 
 			double probability = 0.991234;
-			String clazzLocalNameWithPrefix = domainURI.getDisplayName(); //TODO: move outside the for loop
 
 			if ( domainURI.getPrefix() == null )
 			{

@@ -118,9 +118,8 @@ public class GetSemanticSuggestionsCommand extends WorksheetSelectionCommand
 					else
 					{
 						model = new SemanticTypeUtil().predictColumnSemanticType( workspace, worksheet, currentColumnPath, 10, selection );
-						//TODO: provide TermPicker object as parameter for getAsJSONObject; adjust maxLabels to 10
 						//result = model.getAsJSONObject( classUri, ontMgr, 10 );
-						result = termPickerRecommendations.appendTermPickerRecommendations( ontMgr, 10 );
+						result = termPickerRecommendations.appendTermPickerRecommendations( ontMgr, 20 );
 					}
 				}
 				else
