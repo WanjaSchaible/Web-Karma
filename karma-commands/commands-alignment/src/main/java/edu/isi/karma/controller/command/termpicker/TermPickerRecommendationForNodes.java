@@ -34,6 +34,7 @@ public class TermPickerRecommendationForNodes
 		TermPickerRecommendations termPickerRecsInc = new TermPickerRecommendations( "", incomingPropertyString, rdfType );
 		TermPickerRecommendations termPickerRecsOutg = new TermPickerRecommendations( rdfType, outgoingPropertyString, "" );
 
+		//TODO: the RDF Type is not supposed to be part of it...We are looking for changing it
 		JSONObject incomingPropertyReturnObject = new JSONObject( termPickerRecsInc.getJsonObjectRecommendation() );
 		JSONObject outgoingPropertyReturnObject = new JSONObject( termPickerRecsOutg.getJsonObjectRecommendation() );
 
