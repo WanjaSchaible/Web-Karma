@@ -1,6 +1,7 @@
 package edu.isi.karma.controller.command.termpicker;
 
 import edu.isi.karma.controller.command.termpicker.helper.StringDoubleComparator;
+import edu.isi.karma.controller.command.termpicker.helper.StringIntegerComparator;
 import edu.isi.karma.controller.command.termpicker.helper.TypeGetterCase;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,22 +33,18 @@ public class TermPickerRecommendationForNodes
 
 	private void performRecommendationProcess()
 	{
-		//TODO: distinguish between incoming + outgoing, only one of them, and no one (right now only the one in the middle needed)
-
-		HashMap<String, Integer> incomingPropertyTypes = new HashMap<>();
-		HashMap<String, Integer> outgoingPropertyTypes = new HashMap<>();
-
 		int whichCase = TypeGetterCase.getCase( incomingPropertyString, outgoingPropertyString );
 
 		if ( whichCase == 1 ) // only incoming properties
 		{
 			TermPickerRecommendations termPickerRecsInc = new TermPickerRecommendations( "", incomingPropertyString, "" );
 			JSONObject incomingPropertyReturnObject = new JSONObject( termPickerRecsInc.getJsonObjectRecommendation() );
-			incomingPropertyTypes = fillPropertyTypeMap( incomingPropertyReturnObject, "listOfOtsRecommendationsFeatures" );
-			for ( Map.Entry<String, Integer> classEntry : incomingPropertyTypes.entrySet() )
+			HashMap<String, Integer> types = fillPropertyTypeMap( incomingPropertyReturnObject, "listOfOtsRecommendationsFeatures" );
+			List<String> rankedTypes = rankMapByValueInteger( types );
+			for ( String rdfType : rankedTypes )
 			{
-				this.termSlpUsageMap.put( classEntry.getKey(), (double) classEntry.getValue() );
-				this.rdfTypeRecommendations.add( classEntry.getKey() );
+				this.termSlpUsageMap.put( rdfType, (double) types.get( rdfType ) );
+				this.rdfTypeRecommendations.add( rdfType );
 			}
 
 		}
@@ -55,22 +52,25 @@ public class TermPickerRecommendationForNodes
 		{
 			TermPickerRecommendations termPickerRecsOutgoing = new TermPickerRecommendations( "", outgoingPropertyString, "" );
 			JSONObject outgoingPropertyReturnObject = new JSONObject( termPickerRecsOutgoing.getJsonObjectRecommendation() );
-			outgoingPropertyTypes = fillPropertyTypeMap( outgoingPropertyReturnObject, "listOfStsRecommendationFeatures" );
-			for ( Map.Entry<String, Integer> classEntry : outgoingPropertyTypes.entrySet() )
+			HashMap<String, Integer> types = fillPropertyTypeMap( outgoingPropertyReturnObject, "listOfStsRecommendationFeatures" );
+			List<String> rankedTypes = rankMapByValueInteger( types );
+			for ( String rdfType : rankedTypes )
 			{
-				this.termSlpUsageMap.put( classEntry.getKey(), (double) classEntry.getValue() );
-				this.rdfTypeRecommendations.add( classEntry.getKey() );
+				this.termSlpUsageMap.put( rdfType, (double) types.get( rdfType ) );
+				this.rdfTypeRecommendations.add( rdfType );
 			}
 		}
 		else if ( whichCase == 3 ) // both incoming and outgoing
 		{
 			TermPickerRecommendations termPickerRecsInc = new TermPickerRecommendations( "", incomingPropertyString, "" );
 			JSONObject incomingPropertyReturnObject = new JSONObject( termPickerRecsInc.getJsonObjectRecommendation() );
-			incomingPropertyTypes = fillPropertyTypeMap( incomingPropertyReturnObject, "listOfOtsRecommendationsFeatures" );
+			HashMap<String, Integer> incomingPropertyTypes = fillPropertyTypeMap( incomingPropertyReturnObject,
+					"listOfOtsRecommendationsFeatures" );
 
 			TermPickerRecommendations termPickerRecsOutg = new TermPickerRecommendations( "", outgoingPropertyString, "" );
 			JSONObject outgoingPropertyReturnObject = new JSONObject( termPickerRecsOutg.getJsonObjectRecommendation() );
-			outgoingPropertyTypes = fillPropertyTypeMap( outgoingPropertyReturnObject, "listOfStsRecommendationFeatures" );
+			HashMap<String, Integer> outgoingPropertyTypes = fillPropertyTypeMap( outgoingPropertyReturnObject,
+					"listOfStsRecommendationFeatures" );
 
 			this.termSlpUsageMap = getCommonTermInRankedOrder( incomingPropertyTypes, outgoingPropertyTypes );
 			this.rdfTypeRecommendations = reRankCommonRdfTypes( termSlpUsageMap );
@@ -128,6 +128,21 @@ public class TermPickerRecommendationForNodes
 		StringDoubleComparator bvc = new StringDoubleComparator( treeMapOfTerms );
 		TreeMap<String, Double> reRankedMap = new TreeMap<String, Double>( bvc );
 		reRankedMap.putAll( termSlpUsageMap );
+
+		reRankedList.addAll( reRankedMap.keySet() );
+
+		return reRankedList;
+	}
+
+	private List<String> rankMapByValueInteger( HashMap<String, Integer> unsortedTypes )
+	{
+		List<String> reRankedList = new ArrayList<>();
+		TreeMap<String, Integer> treeMapOfTerms = new TreeMap<>();
+		treeMapOfTerms.putAll( unsortedTypes );
+
+		StringIntegerComparator bvc = new StringIntegerComparator( treeMapOfTerms );
+		TreeMap<String, Integer> reRankedMap = new TreeMap<String, Integer>( bvc );
+		reRankedMap.putAll( unsortedTypes );
 
 		reRankedList.addAll( reRankedMap.keySet() );
 

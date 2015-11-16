@@ -175,13 +175,22 @@ public class GetClassesCommand extends WorksheetCommand
 				{
 					HashSet<String> incomingProperties = new HashSet<>();
 					HashSet<String> outgoingProperties = new HashSet<>();
+					String uriProperty = "http://isi.edu/integration/karma/dev#classLink";
 					for ( LabeledLink incomingLink : incomingLinks )
 					{
-						incomingProperties.add( incomingLink.getUri() );
+						//do not include rdfs:label, uri, and url
+						if ( !(incomingLink.equals( uriProperty )) )
+						{
+							incomingProperties.add( incomingLink.getUri() );
+						}
 					}
 					for ( LabeledLink outgoingLink : outgoingLinks )
 					{
-						outgoingProperties.add( outgoingLink.getUri() );
+						if ( !(outgoingLink.equals( uriProperty )) )
+						{
+							outgoingProperties.add( outgoingLink.getUri() );
+						}
+
 					}
 					String incomingPropertyString = getPropertyString( incomingProperties );
 					String outgoingPropertyString = getPropertyString( outgoingProperties );
@@ -212,6 +221,7 @@ public class GetClassesCommand extends WorksheetCommand
 						nodeSetToProcess = finalNodeSet;
 					}
 
+					Map<Node, Boolean> nodeSetOfRecommendedClasses = new HashMap<>();
 					for ( Entry<Node, Boolean> entry : nodeSetToProcess.entrySet() )
 					{
 						Node node = entry.getKey();
@@ -226,37 +236,85 @@ public class GetClassesCommand extends WorksheetCommand
 								continue;
 							}
 						}
+						nodeSetOfRecommendedClasses.put( entry.getKey(), entry.getValue() );
+					}
 
-						JSONObject nodeObj = new JSONObject();
-						String nodeLabelStr = node.getDisplayId();
+					if ( nodeRecommendations != null && !nodeRecommendations.getRdfTypeRecommendations().isEmpty() )
+					{
+						for ( String rdfType : nodeRecommendations.getRdfTypeRecommendations() )
+						{
+							for ( Entry<Node, Boolean> entry : nodeSetOfRecommendedClasses.entrySet() )
+							{
+								if ( entry.getKey().getUri().equals( rdfType ) )
+								{
+									Node node = entry.getKey();
 
-						Label nodeLabel = node.getLabel();
-						if ( nodeLabel.getUri() != null && nodeLabel.getNs() != null
-								&& nodeLabel.getUri().equalsIgnoreCase( nodeLabel.getNs() ) )
-						{
-							nodeLabelStr = node.getId();
+									JSONObject nodeObj = new JSONObject();
+									String nodeLabelStr = node.getDisplayId();
+
+									Label nodeLabel = node.getLabel();
+									if ( nodeLabel.getUri() != null && nodeLabel.getNs() != null
+											&& nodeLabel.getUri().equalsIgnoreCase( nodeLabel.getNs() ) )
+									{
+										nodeLabelStr = node.getId();
+									}
+									else if ( nodeLabel.getPrefix() == null && nodeLabel.getUri() != null )
+									{
+										nodeLabelStr = nodeLabel.getUri() + "/" + nodeLabelStr;
+									}
+									if ( entry.getValue().booleanValue() == false )
+										nodeLabelStr += " (add)";
+									nodeObj.put( JsonKeys.nodeLabel.name(), nodeLabelStr );
+									nodeObj.put( JsonKeys.nodeId.name(), node.getId() );
+									nodeObj.put( JsonKeys.nodeUri.name(), nodeLabel.getUri() );
+									nodesArray.put( nodeObj );
+								}
+							}
 						}
-						else if ( nodeLabel.getPrefix() == null && nodeLabel.getUri() != null )
+					}
+					else
+					{
+						for ( Entry<Node, Boolean> entry : nodeSetOfRecommendedClasses.entrySet() )
 						{
-							nodeLabelStr = nodeLabel.getUri() + "/" + nodeLabelStr;
+							Node node = entry.getKey();
+
+							JSONObject nodeObj = new JSONObject();
+							String nodeLabelStr = node.getDisplayId();
+
+							Label nodeLabel = node.getLabel();
+							if ( nodeLabel.getUri() != null && nodeLabel.getNs() != null
+									&& nodeLabel.getUri().equalsIgnoreCase( nodeLabel.getNs() ) )
+							{
+								nodeLabelStr = node.getId();
+							}
+							else if ( nodeLabel.getPrefix() == null && nodeLabel.getUri() != null )
+							{
+								nodeLabelStr = nodeLabel.getUri() + "/" + nodeLabelStr;
+							}
+							if ( entry.getValue().booleanValue() == false )
+								nodeLabelStr += " (add)";
+							nodeObj.put( JsonKeys.nodeLabel.name(), nodeLabelStr );
+							nodeObj.put( JsonKeys.nodeId.name(), node.getId() );
+							nodeObj.put( JsonKeys.nodeUri.name(), nodeLabel.getUri() );
+							nodesArray.put( nodeObj );
 						}
-						if ( entry.getValue().booleanValue() == false )
-							nodeLabelStr += " (add)";
-						nodeObj.put( JsonKeys.nodeLabel.name(), nodeLabelStr );
-						nodeObj.put( JsonKeys.nodeId.name(), node.getId() );
-						nodeObj.put( JsonKeys.nodeUri.name(), nodeLabel.getUri() );
-						nodesArray.put( nodeObj );
 					}
 
 					obj.put( JsonKeys.nodes.name(), nodesArray );
 					pw.println( obj.toString() );
 				}
-				catch (JSONException e)
+
+				catch (
+						JSONException e
+						)
+
 				{
 					e.printStackTrace();
 				}
 			}
-		} );
+		}
+
+		);
 		return upd;
 	}
 
