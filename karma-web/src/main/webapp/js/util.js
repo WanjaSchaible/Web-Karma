@@ -321,7 +321,7 @@ function getClassesInModel(worksheetId, columnId, alignmentId) {
             alert("Error occured while getting nodes list!");
         }
     });
-    sortClassPropertyNodes(result);
+    //sortClassPropertyNodes(result);
     return result;
 }
 

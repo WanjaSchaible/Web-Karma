@@ -1,6 +1,7 @@
 package edu.isi.karma.controller.command.termpicker;
 
 import edu.isi.karma.controller.command.termpicker.helper.StringDoubleComparator;
+import edu.isi.karma.controller.command.termpicker.helper.TypeGetterCase;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -31,20 +32,54 @@ public class TermPickerRecommendationForNodes
 
 	private void performRecommendationProcess()
 	{
-		TermPickerRecommendations termPickerRecsInc = new TermPickerRecommendations( "", incomingPropertyString, rdfType );
-		TermPickerRecommendations termPickerRecsOutg = new TermPickerRecommendations( rdfType, outgoingPropertyString, "" );
+		//TODO: distinguish between incoming + outgoing, only one of them, and no one (right now only the one in the middle needed)
 
-		//TODO: the RDF Type is not supposed to be part of it...We are looking for changing it
-		JSONObject incomingPropertyReturnObject = new JSONObject( termPickerRecsInc.getJsonObjectRecommendation() );
-		JSONObject outgoingPropertyReturnObject = new JSONObject( termPickerRecsOutg.getJsonObjectRecommendation() );
+		HashMap<String, Integer> incomingPropertyTypes = new HashMap<>();
+		HashMap<String, Integer> outgoingPropertyTypes = new HashMap<>();
 
-		//TODO: do it for Learning To Rank Also
-		HashMap<String, Integer> incomingPropertyTypes = fillPropertyTypeMap( incomingPropertyReturnObject,
-				"listOfOtsRecommendationsFeatures" );
-		HashMap<String, Integer> outgoingPropertyTypes = fillPropertyTypeMap( outgoingPropertyReturnObject,
-				"listOfStsRecommendationFeatures" );
-		this.termSlpUsageMap = getCommonTermInRankedOrder( incomingPropertyTypes, outgoingPropertyTypes );
-		this.rdfTypeRecommendations = reRankCommonRdfTypes( termSlpUsageMap );
+		int whichCase = TypeGetterCase.getCase( incomingPropertyString, outgoingPropertyString );
+
+		if ( whichCase == 1 ) // only incoming properties
+		{
+			TermPickerRecommendations termPickerRecsInc = new TermPickerRecommendations( "", incomingPropertyString, "" );
+			JSONObject incomingPropertyReturnObject = new JSONObject( termPickerRecsInc.getJsonObjectRecommendation() );
+			incomingPropertyTypes = fillPropertyTypeMap( incomingPropertyReturnObject, "listOfOtsRecommendationsFeatures" );
+			for ( Map.Entry<String, Integer> classEntry : incomingPropertyTypes.entrySet() )
+			{
+				this.termSlpUsageMap.put( classEntry.getKey(), (double) classEntry.getValue() );
+				this.rdfTypeRecommendations.add( classEntry.getKey() );
+			}
+
+		}
+		else if ( whichCase == 2 ) // only outgoing
+		{
+			TermPickerRecommendations termPickerRecsOutgoing = new TermPickerRecommendations( "", outgoingPropertyString, "" );
+			JSONObject outgoingPropertyReturnObject = new JSONObject( termPickerRecsOutgoing.getJsonObjectRecommendation() );
+			outgoingPropertyTypes = fillPropertyTypeMap( outgoingPropertyReturnObject, "listOfStsRecommendationFeatures" );
+			for ( Map.Entry<String, Integer> classEntry : outgoingPropertyTypes.entrySet() )
+			{
+				this.termSlpUsageMap.put( classEntry.getKey(), (double) classEntry.getValue() );
+				this.rdfTypeRecommendations.add( classEntry.getKey() );
+			}
+		}
+		else if ( whichCase == 3 ) // both incoming and outgoing
+		{
+			TermPickerRecommendations termPickerRecsInc = new TermPickerRecommendations( "", incomingPropertyString, "" );
+			JSONObject incomingPropertyReturnObject = new JSONObject( termPickerRecsInc.getJsonObjectRecommendation() );
+			incomingPropertyTypes = fillPropertyTypeMap( incomingPropertyReturnObject, "listOfOtsRecommendationsFeatures" );
+
+			TermPickerRecommendations termPickerRecsOutg = new TermPickerRecommendations( "", outgoingPropertyString, "" );
+			JSONObject outgoingPropertyReturnObject = new JSONObject( termPickerRecsOutg.getJsonObjectRecommendation() );
+			outgoingPropertyTypes = fillPropertyTypeMap( outgoingPropertyReturnObject, "listOfStsRecommendationFeatures" );
+
+			this.termSlpUsageMap = getCommonTermInRankedOrder( incomingPropertyTypes, outgoingPropertyTypes );
+			this.rdfTypeRecommendations = reRankCommonRdfTypes( termSlpUsageMap );
+		}
+		else
+		{
+			//TODO: implement
+		}
+
 	}
 
 	private HashMap<String, Integer> fillPropertyTypeMap( JSONObject propertyReturnObject, String listOfFeatures )
