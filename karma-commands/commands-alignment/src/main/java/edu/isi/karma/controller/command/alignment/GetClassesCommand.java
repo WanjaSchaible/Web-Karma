@@ -179,14 +179,14 @@ public class GetClassesCommand extends WorksheetCommand
 					for ( LabeledLink incomingLink : incomingLinks )
 					{
 						//do not include rdfs:label, uri, and url
-						if ( !(incomingLink.equals( uriProperty )) )
+						if ( !(incomingLink.getUri().equals( uriProperty )) )
 						{
 							incomingProperties.add( incomingLink.getUri() );
 						}
 					}
 					for ( LabeledLink outgoingLink : outgoingLinks )
 					{
-						if ( !(outgoingLink.equals( uriProperty )) )
+						if ( !(outgoingLink.getUri().equals( uriProperty )) )
 						{
 							outgoingProperties.add( outgoingLink.getUri() );
 						}
