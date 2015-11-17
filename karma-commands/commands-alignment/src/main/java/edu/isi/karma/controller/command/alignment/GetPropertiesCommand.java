@@ -124,7 +124,9 @@ public class GetPropertiesCommand extends WorksheetCommand
 		}
 		else if ( propertiesRange == INTERNAL_PROP_RANGE.propertiesWithDomainRange )
 		{
-			Map<String, Label> linkList = ontMgr.getObjectPropertiesByDomainRange( domainURI, rangeURI, true );
+			//TODO: If no recommendations mode, then let domain and range Recommendations take place
+			//Map<String, Label> linkList = ontMgr.getObjectPropertiesByDomainRange( domainURI, rangeURI, true );
+			Map<String, Label> linkList = new HashMap<>();
 			for ( Label label : linkList.values() )
 			{
 				properties.add( new DataPropertyLink( label.getUri(), label ) );

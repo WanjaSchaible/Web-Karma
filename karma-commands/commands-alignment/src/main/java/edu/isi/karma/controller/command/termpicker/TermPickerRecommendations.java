@@ -24,7 +24,9 @@ public class TermPickerRecommendations
 	String sbjType;
 	String property;
 	String objType;
-	String recMethod;
+	String recMethod = "l2r";
+
+	//TODO: make each instance go on a different port: 8080 - L2R, 8081 - AR, 8082, No Recs
 
 	List<String> stsRecommendations = new ArrayList<String>();
 	List<String> psRecommendations = new ArrayList<String>();
@@ -236,7 +238,7 @@ public class TermPickerRecommendations
 		}
 		if ( recMethod != null )
 		{
-			arguments.add( "recMethod" + recMethod );
+			arguments.add( "recMethod=" + recMethod );
 		}
 
 		for ( String argument : arguments )

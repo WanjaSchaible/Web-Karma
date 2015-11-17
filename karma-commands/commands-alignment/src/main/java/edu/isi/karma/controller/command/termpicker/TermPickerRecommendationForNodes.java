@@ -39,26 +39,13 @@ public class TermPickerRecommendationForNodes
 		{
 			TermPickerRecommendations termPickerRecsInc = new TermPickerRecommendations( "", incomingPropertyString, "" );
 			JSONObject incomingPropertyReturnObject = new JSONObject( termPickerRecsInc.getJsonObjectRecommendation() );
-			HashMap<String, Integer> types = fillPropertyTypeMap( incomingPropertyReturnObject, "listOfOtsRecommendationsFeatures" );
-			List<String> rankedTypes = rankMapByValueInteger( types );
-			for ( String rdfType : rankedTypes )
-			{
-				this.termSlpUsageMap.put( rdfType, (double) types.get( rdfType ) );
-				this.rdfTypeRecommendations.add( rdfType );
-			}
-
+			fillRecommendations( incomingPropertyReturnObject, "listOfOtsRecommendationsFeatures" );
 		}
 		else if ( whichCase == 2 ) // only outgoing
 		{
 			TermPickerRecommendations termPickerRecsOutgoing = new TermPickerRecommendations( "", outgoingPropertyString, "" );
 			JSONObject outgoingPropertyReturnObject = new JSONObject( termPickerRecsOutgoing.getJsonObjectRecommendation() );
-			HashMap<String, Integer> types = fillPropertyTypeMap( outgoingPropertyReturnObject, "listOfStsRecommendationFeatures" );
-			List<String> rankedTypes = rankMapByValueInteger( types );
-			for ( String rdfType : rankedTypes )
-			{
-				this.termSlpUsageMap.put( rdfType, (double) types.get( rdfType ) );
-				this.rdfTypeRecommendations.add( rdfType );
-			}
+			fillRecommendations( outgoingPropertyReturnObject, "listOfStsRecommendationFeatures" );
 		}
 		else if ( whichCase == 3 ) // both incoming and outgoing
 		{
@@ -80,6 +67,29 @@ public class TermPickerRecommendationForNodes
 			//TODO: implement
 		}
 
+	}
+
+	private void fillRecommendations(
+			JSONObject outgoingPropertyReturnObject,
+			String listOfRecommendationFeatures )
+	{
+		JSONArray arrOfRdfTypes = outgoingPropertyReturnObject.getJSONArray( listOfRecommendationFeatures );
+
+		if ( arrOfRdfTypes != null )
+		{
+			for ( int i = 0; i < arrOfRdfTypes.length(); i++ )
+			{
+				JSONObject object = arrOfRdfTypes.getJSONObject( i );
+
+				String term = object.getString( "term" );
+				int slpCount = object.getInt( "slps" );
+				double rankScore = object.getDouble( "rankingScore" );
+
+				this.rdfTypeRecommendations.add( term );
+				this.termRankScoreMap.put( term, rankScore );
+				this.termSlpUsageMap.put( term, (double) slpCount );
+			}
+		}
 	}
 
 	private HashMap<String, Integer> fillPropertyTypeMap( JSONObject propertyReturnObject, String listOfFeatures )
