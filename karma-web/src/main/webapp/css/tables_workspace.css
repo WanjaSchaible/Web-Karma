@@ -21,175 +21,182 @@
 
 #tablesWorkspace {
 
-/*	overflow: auto; */
-	min-height: 450px;
+    /*	overflow: auto; */
+    min-height: 450px;
 }
 
-#ScrollHeadersPlaceholder table{
-	overflow: auto;
+#ScrollHeadersPlaceholder table {
+    overflow: auto;
 }
 
 .Worksheet {
-	margin-bottom: 20px;
-	margin-right: 50px;
-/*	display: table;*/
-	display: inline-block;
-	min-width:350px;
+    margin-bottom: 20px;
+    margin-right: 50px;
+    /*	display: table;*/
+    display: inline-block;
+    min-width: 350px;
 }
 
 .nestedTablePager {
-	width: 250px;
-	background-color: #C0C0C0;
-	font-family: Helvetica;
-	font-size: 11px;
-	padding:5px;
-	z-index: 0;
+    width: 250px;
+    background-color: #C0C0C0;
+    font-family: Helvetica;
+    font-size: 11px;
+    padding: 5px;
+    z-index: 0;
 }
 
-.WorksheetTitleDiv{
-	background-color: #C0C0C0;
-	/*background-image: url("../images/navBG.png");
-	background-repeat: repeat-x;*/
-	color:black;
-	padding-left: 10px;
+.WorksheetTitleDiv {
+    background-color: #C0C0C0;
+    /*background-image: url("../images/navBG.png");
+    background-repeat: repeat-x;*/
+    color: black;
+    padding-left: 10px;
     padding-right: 10px;
     padding-top: 5px;
     height: 30px;
 }
+
 .WorksheetTitle, .WorksheetTitle a, .WorksheetTitle a:visited, .WorksheetTitle a:active, .WorksheetTitle a:hover, .WorksheetTitle a:focus {
-	text-decoration: none;
-	color: black;
-}
-.worksheetDropdown {
-	float: left;
+    text-decoration: none;
+    color: black;
 }
 
-.nestedTableLastRow img{
-	height : 10px;
-	/*width: 100%;*/
+.worksheetDropdown {
+    float: left;
+}
+
+.nestedTableLastRow img {
+    height: 10px;
+    /*width: 100%;*/
 }
 
 .nestedTableLastRow {
-	position: relative;
-	padding: 0px;
-	margin: 0px;
-	height: 10px;
+    position: relative;
+    padding: 0px;
+    margin: 0px;
+    height: 10px;
 }
 
 .tableTitleTextDiv {
-	display: inline-block;
-	font-size: 18px;
-	font-family: arial;
-	font-weight: bold;
-	margin-left: 2px;
-	margin-top: 2px;
+    display: inline-block;
+    font-size: 18px;
+    font-family: arial;
+    font-weight: bold;
+    margin-left: 2px;
+    margin-top: 2px;
 }
+
 .solid1px {
-	border: solid 1px;
+    border: solid 1px;
 }
 
 .cursorPointer {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 div#tableCellMenuButtonDiv {
-	float: left;
-	/*display: inline-block;*/
-	cursor: pointer;
+    float: left;
+    /*display: inline-block;*/
+    cursor: pointer;
     width: 20px;
     height: 12px;
-    margin-left:4px;
+    margin-left: 4px;
     margin-top: 5px;
     margin-right: 4px;
 }
 
 div#columnHeadingMenuButtonDiv {
-	cursor: pointer;
+    cursor: pointer;
     width: 20px;
     height: 12px;
-	margin-left:4px;
+    margin-left: 4px;
     margin-top: 5px;
     margin-right: 4px;
 }
 
 div.rightOptionsToolbar {
-	float: right;
+    float: right;
 }
+
 .showHideWorkSheet {
-	cursor: pointer;
+    cursor: pointer;
     width: 20px;
     height: 14px;
-    margin-left:4px;
+    margin-left: 4px;
     margin-top: 4px;
     margin-right: 4px;
     vertical-align: top;
 }
 
 div.showEncoding {
-	display: inline;
+    display: inline;
     font-size: 14px;
     padding-bottom: 7px;
     padding-right: 5px;
     vertical-align: middle;
 }
+
 div.toggleMapView {
     display: inline;
-	cursor: pointer;
+    cursor: pointer;
 }
 
 div.toggleMapView img {
-	width: 18px;
+    width: 18px;
     height: 18px;
     padding-top: 2px;
 }
 
 .minimizeWorksheetImg {
-	height: 18px;
-	width:18px;
-	cursor: pointer;
+    height: 18px;
+    width: 18px;
+    cursor: pointer;
 }
 
 .TableDiv {
-	background-color: #F5F5F5;
+    background-color: #F5F5F5;
 }
 
 div.ColumnHeadingNameDiv {
-	margin-top: 2px;
+    margin-top: 2px;
 }
+
 div.semanticTypeDiv {
-	cursor: pointer;
-	font-size: 10px;
-	display:inline-block;
-	width: auto;
-	padding: 2px;
-	margin: 2px;
+    cursor: pointer;
+    font-size: 10px;
+    display: inline-block;
+    width: auto;
+    padding: 2px;
+    margin: 2px;
 }
+
 div.HighConfidenceLevel {
-	background-color: #525252;
-	color: white;
+    background-color: #525252;
+    color: white;
 }
 
 div.MediumConfidenceLevel {
-	background-color: #525252;
-	color: white;
+    background-color: #525252;
+    color: white;
 }
 
 div.LowConfidenceLevel {
-	background-color: #CD4F39;
-	color: white;
+    background-color: #CD4F39;
+    color: white;
 }
 
 div.HighConfidenceLevel:hover {
-	background-color: #3B3B3B;
+    background-color: #3B3B3B;
 }
 
 div.MediumConfidenceLevel:hover {
-	background-color: #3B3B3B;
+    background-color: #3B3B3B;
 }
 
 div.LowConfidenceLevel:hover {
-	background-color: #8B3626;
-	color: white;
+    background-color: #8B3626;
+    color: white;
 }
 
 /*#commHistoryAndWorkspace thead tr td {
@@ -202,129 +209,143 @@ div.LowConfidenceLevel:hover {
 	border: solid 1px;
 }*/
 
-#commHistoryAndWorkspace td{
-	text-align:center;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
+#commHistoryAndWorkspace td {
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
     min-height: 15px;
-/*	height: 20px;*/
-/*	padding: 3px;*/
-	/*border-width: 1px;*/
+    /*	height: 20px;*/
+    /*	padding: 3px;*/
+    /*border-width: 1px;*/
 }
 
 #commHistoryAndWorkspace div.nestedTableLastRow img {
-	height: 5px;
-	width: 100%;
-	max-width: 80px;
+    height: 5px;
+    width: 100%;
+    max-width: 80px;
 }
 
 div.editedValue {
-	color: #CD3700;
-	border-color: black;
+    color: #CD3700;
+    border-color: black;
 }
+
 .noLineBelow {
-	border: solid 1px;
-	border-bottom: none;
+    border: solid 1px;
+    border-bottom: none;
 }
+
 .noLineAboveAndBelow {
-	border: solid 1px;
-	border-top: none;
-	border-bottom: none;
+    border: solid 1px;
+    border-top: none;
+    border-bottom: none;
 }
+
 #commHistoryAndWorkspace table {
-	border-width: 0px; 
-	border-spacing: 0px; 
-	border-collapse: collapse;
-	border-bottom: solid 1px;
+    border-width: 0px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    border-bottom: solid 1px;
 }
+
 .table01cell {
-	background-color: #E0EEEE ;
+    background-color: #E0EEEE;
 }
+
 .table02cell {
-	background-color: #FFE4C4;
+    background-color: #FFE4C4;
 }
+
 .table03cell {
-	background-color: #AEEEEE;
+    background-color: #AEEEEE;
 }
+
 .table04cell {
-	background-color: #C1CDCD;
+    background-color: #C1CDCD;
 }
+
 .table05cell {
-	background-color: #7FFFD4;
+    background-color: #7FFFD4;
 }
+
 .table06cell {
-	background-color: #FFD39B;
+    background-color: #FFD39B;
 }
+
 .table07cell {
-	background-color: #98F5FF;
+    background-color: #98F5FF;
 }
+
 .table08cell {
-	background-color: #CDC8B1;
+    background-color: #CDC8B1;
 }
+
 .table09cell {
-	background-color: #BDB76B;
+    background-color: #BDB76B;
 }
+
 .table10cell {
-	background-color: #E6E6FA;
+    background-color: #E6E6FA;
 }
+
 .topLevelTableCell {
-	background-color: #FFFFFF;
+    background-color: #FFFFFF;
 }
 
 .topLevelpagerOptions {
-	background-color: #D4D4D4;
-	position: relative;
-	font-family: Helvetica;
-	font-size: 11px;
-	padding:5px;
-	top:0px;
-	left:0px;
+    background-color: #D4D4D4;
+    position: relative;
+    font-family: Helvetica;
+    font-size: 11px;
+    padding: 5px;
+    top: 0px;
+    left: 0px;
 }
 
 .prevNextRowsDiv {
-	position:absolute;
-	padding:5px;
-	top:0px;
-	right:0px;
+    position: absolute;
+    padding: 5px;
+    top: 0px;
+    right: 0px;
 }
 
 a.pagerResizeLink {
-	color: blue;
-	text-decoration: none;
+    color: blue;
+    text-decoration: none;
 }
 
 a.pagerSizeSelected {
-	color:black;
-	text-decoration: none;
-	cursor: default;
+    color: black;
+    text-decoration: none;
+    cursor: default;
 }
 
 .inactiveLink {
-   text-decoration:none;
-   color: #828282;
-   cursor: default;
+    text-decoration: none;
+    color: #828282;
+    cursor: default;
 }
 
 .activeLink {
-   text-decoration:none;
-   color: blue;
-   cursor: pointer;
+    text-decoration: none;
+    color: blue;
+    cursor: pointer;
 }
 
 .ui-dialog-titlebar {
-        font-family: Verdana,Arial,sans-serif;
-        font-size: 0.6em;
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 0.6em;
 }
 
 #triangle {
     border: 1px solid #DCDCDC;
     border-width: 2px 0 0 2px;
-    width:7px;
-    height:7px;
+    width: 7px;
+    height: 7px;
     /* for firefox, safari, chrome, etc. */
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
-    -o-transform:rotate(45deg);
+    -o-transform: rotate(45deg);
     z-index: 0;
     position: relative;
     bottom: -4px;
@@ -333,14 +354,14 @@ a.pagerSizeSelected {
 }
 
 #tableCellMenutriangle {
-	border: 0.5px solid #8E9095;
+    border: 0.5px solid #8E9095;
     border-width: 2px 0 0 2px;
-    width:7px;
-    height:7px;
+    width: 7px;
+    height: 7px;
     /* for firefox, safari, chrome, etc. */
     -webkit-transform: rotate(45deg);
     -moz-transform: rotate(45deg);
-    -o-transform:rotate(45deg);
+    -o-transform: rotate(45deg);
     filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.7071067811865476, M12=-0.7071067811865475, M21=0.7071067811865475, M22=0.7071067811865476, sizingMethod='auto expand');
     -ms-transform: rotate(45deg);
     zoom: 1;
@@ -352,140 +373,155 @@ a.pagerSizeSelected {
 }
 
 #CellValueDialog {
-	font-size: 12px;
+    font-size: 12px;
 }
 
 #editCellTextArea {
-	width: 95%;
-	height: 75%;
-	resize: none;
-	font-family: Helvetica;
-	font-size: 12px;
+    width: 95%;
+    height: 75%;
+    resize: none;
+    font-family: Helvetica;
+    font-size: 12px;
 }
 
 div#ScrollHeadersPlaceholder table {
-	border-width: 0px; 
-	border-spacing: 0px; 
-	border-collapse: collapse;
-	border-bottom: solid 1px;
+    border-width: 0px;
+    border-spacing: 0px;
+    border-collapse: collapse;
+    border-bottom: solid 1px;
 }
 
 div#ScrollHeadersPlaceholder table td {
-	text-align:center;
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 12px;
-	border-width: 1px;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    border-width: 1px;
 }
 
 div#WorksheetOptionsDiv {
-	padding-right: 20px;
+    padding-right: 20px;
 }
 
 div#tableCellToolBarMenu {
-	width: 48px;
-	padding: 2px;
-	background-color: #A3A3A3;
+    width: 48px;
+    padding: 2px;
+    background-color: #A3A3A3;
 }
 
 div#tableCellToolBarMenu button {
-	margin: 2px;
-	width: 44px;
+    margin: 2px;
+    width: 44px;
 }
 
 div#columnHeadingDropDownMenu {
-	width: 85px;
-	padding: 2px;
-	background-color: #A3A3A3;
+    width: 85px;
+    padding: 2px;
+    background-color: #A3A3A3;
 }
 
 div#columnHeadingDropDownMenu button {
-	margin: 2px;
-	width: 80px;
+    margin: 2px;
+    width: 80px;
 }
 
 table#UnassignedLabelTable td {
-	padding: 4px;
-	font-size: 10px;
+    padding: 4px;
+    font-size: 10px;
 }
 
 .mediumSizedFont {
-	font-size: 14px;
+    font-size: 14px;
 }
 
 .smallSizedFont {
-	font-size: 10px;
+    font-size: 10px;
 }
 
 div.ColumnHeadingNameDiv {
-	display: inline;
+    display: inline;
 }
 
 span.tag {
-	width: 6px;
-	height: 15px;
-	float: right;
-	margin-left: 5px;
+    width: 6px;
+    height: 15px;
+    float: right;
+    margin-left: 5px;
 }
 
 a.RdfDownloadLink {
-	margin-left: 8px;
+    margin-left: 8px;
 }
 
 a.KMLDownloadLink {
-	margin-left: 8px;
+    margin-left: 8px;
 }
 
-.SRIDLink A:link {text-decoration: underline; color: blue;}
-.SRIDLink A:visited {text-decoration: underline; color: blue;}
-.SRIDLink A:active {text-decoration: underline; color: blue;}
-.SRIDLink A:hover {text-decoration: underline; color: red;}
+.SRIDLink A:link {
+    text-decoration: underline;
+    color: blue;
+}
+
+.SRIDLink A:visited {
+    text-decoration: underline;
+    color: blue;
+}
+
+.SRIDLink A:active {
+    text-decoration: underline;
+    color: blue;
+}
+
+.SRIDLink A:hover {
+    text-decoration: underline;
+    color: red;
+}
 
 div#ExpandCellValueDialog div#cellExpandedValue {
-	font-size: 0.6em;
-/*	font-family: Times;*/
-	background-color: #F5F5F5;
-	padding: 5px;
+    font-size: 0.6em;
+    /*	font-family: Times;*/
+    background-color: #F5F5F5;
+    padding: 5px;
 }
 
 div#ExpandCellValueDialog div#rdfValue {
-	font-size: 0.6em;
-/*	font-family: Times;*/
-	background-color: #F5F5F5;
-	padding: 5px;
+    font-size: 0.6em;
+    /*	font-family: Times;*/
+    background-color: #F5F5F5;
+    padding: 5px;
 }
 
 div.waitingDiv {
-	background-color: #828282;
-	opacity:          0.70;
-	filter: alpha(opacity=70); /* IE lt 8 */
+    background-color: #828282;
+    opacity: 0.70;
+    filter: alpha(opacity=70); /* IE lt 8 */
     -ms-filter: "alpha(opacity=70)"; /* IE 8 */
     -khtml-opacity: .70; /* Safari 1.x */
-   	color: #000000;
-   	text-align: center;
+    color: #000000;
+    text-align: center;
 }
 
 div.waitingDiv div {
-	margin-top: 4px;
+    margin-top: 4px;
 }
 
 div.waitingDiv img {
-	margin-left: 4px;
+    margin-left: 4px;
 }
 
 div#WaitingDiv {
-	margin: auto;
+    margin: auto;
 }
 
 span.bold {
-	font-weight: 900;
+    font-weight: 900;
 }
 
 .error {
-	color: red;
+    color: red;
 }
 
 a.DownloadLink {
-	border-left: 1px solid;
+    border-left: 1px solid;
     font-family: Helvetica;
     font-size: 0.8em;
     margin-left: 5px;
@@ -493,19 +529,19 @@ a.DownloadLink {
 }
 
 input.smallSizedFont {
-	font-size: 10px;
+    font-size: 10px;
 }
 
 .smallSizedFont {
-	font-size: 10px;
+    font-size: 10px;
 }
 
 span#applyHistoryButton {
-	font-size: 18px;
-	margin-left: 2px;
-	margin-top: 2px;
-	width: 128px;
-	height: 20px;
+    font-size: 18px;
+    margin-left: 2px;
+    margin-top: 2px;
+    width: 128px;
+    height: 20px;
 }
 
 #setPropertiesDialog input[type=text] {
@@ -513,41 +549,43 @@ span#applyHistoryButton {
 }
 
 .tableDropdown .dropdown-menu {
-	text-align: left;
+    text-align: left;
 }
 
 #btnPrevCache {
-	margin-top: 25px;
+    margin-top: 25px;
 }
+
 #btnNextCache {
-	margin-top: 25px;
+    margin-top: 25px;
 }
 
 #propertySuggestDropdown ul {
-	overflow: auto;
-	max-height: 200px;
+    overflow: auto;
+    max-height: 200px;
 }
 
 .dropdownInput .input-group-addon {
-	width: 0%;
+    width: 0%;
 }
 
 .dropdownInput {
-	padding-left: 20px;
+    padding-left: 20px;
     width: 100%;
     padding-right: 10px;
 }
 
-.dropdown-menu>.propertyDropdown_suggestion>a {
-	font-weight: bold;
+.dropdown-menu > .propertyDropdown_suggestion > a {
+    font-weight: bold;
 }
 
-.dropdown-menu>.propertyDropdown_compatible>a {
-	/* color: gray; */
+.dropdown-menu > .propertyDropdown_compatible > a {
+    /* color: gray; */
+    font-weight: bold;
 }
 
 #classSuggestDropdown ul {
-	overflow: auto;
-	width: 300px;
-	max-height: 250px;
+    overflow: auto;
+    width: 300px;
+    max-height: 250px;
 }

@@ -24,7 +24,7 @@ public class TermPickerRecommendations
 	String sbjType;
 	String property;
 	String objType;
-	String recMethod = "l2r";
+	String recMethod; //ar for no Recs, "l2r" for l2r, and nothing for Association Rules
 
 	//TODO: make each instance go on a different port: 8080 - L2R, 8081 - AR, 8082, No Recs
 
