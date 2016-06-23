@@ -219,7 +219,7 @@ public class TermPickerRecommendations
 		String parameterStart = "?";
 		String parameterJoin = "&";
 
-		urlBuilder.append( "http://kdsrv01.informatik.uni-kiel.de:8081/pickerapi/recommend" );
+		urlBuilder.append( "http://kdsrv01.informatik.uni-kiel.de:8080/pickerapi/recommend" );
 		urlBuilder.append( parameterStart );
 
 		List<String> arguments = new ArrayList<String>();
